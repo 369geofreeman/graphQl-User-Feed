@@ -1,4 +1,4 @@
-# graphQl Blog 🚀
+# GraphQl Blog  🚀
 
  A stand alone example of a blog using GraphQl and Apollo Server
 

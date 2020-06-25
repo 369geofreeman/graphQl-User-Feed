@@ -1,5 +1,11 @@
-# graphQl-basic-training
-Basic training of GraphQl
+# graphQl Blog
 
+ A stand alone example of a blog using GraphQl and Apollo Server
 
-### Appollo Server Docs: https://github.com/apollographql/apollo-server
+### Setup
+
+Run 'npm install' in root directory
+
+### Run
+
+use 'npm run start' to start server

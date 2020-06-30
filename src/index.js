@@ -1,4 +1,5 @@
 const { ApolloServer, gql } = require("apollo-server");
+import { v4 as uuidv4 } from "uuid";
 
 // DUMMY_DATA to emulate database
 const users = [
@@ -50,6 +51,17 @@ const typeDefs = gql`
     comments: [Comment!]!
     me: User!
     post: Post!
+  }
+
+  type Mutation {
+    createUser(name: String!, email: String!, age: Int): User!
+    createPost(
+      title: String!
+      body: String!
+      published: Boolean!
+      author: ID!
+    ): Post!
+    createComment(body: String!, author: ID!, post: ID!): Comment!
   }
 
   type User {
@@ -117,6 +129,49 @@ const resolvers = {
           "It was a cool night on the congo when my eyes locked with the beast...",
         published: false,
       };
+    },
+  },
+  Mutation: {
+    createUser(parent, args, ctx, info) {
+      // Check if email exists
+      const emailTaken = users.some((user) => user.email === args.email);
+      if (emailTaken) throw new Error("Email taken");
+
+      // Save user in object
+      const user = {
+        id: uuidv4(),
+        ...args,
+      };
+      // push user into the users array (fake database)
+      users.push(user);
+      // Return user so we can do stuff with the data
+      return user;
+    },
+    createPost(parent, args, ctx, info) {
+      // Checks if user exists
+      const userExists = users.some((user) => user.id === args.author);
+      // If no user throw error
+      if (!userExists) throw new Error("User not found");
+
+      const post = {
+        id: uuidv4(),
+        ...args,
+      };
+      posts.push(post);
+      return post;
+    },
+    createComment(parent, args, ctx, info) {
+      const userExists = users.some((user) => user.id === args.author);
+      const postExists = posts.some(
+        (post) => post.id === args.post && post.published
+      );
+      if (!userExists || !postExists) throw new Error("User not found or post");
+      const comment = {
+        id: uuidv4(),
+        ...args,
+      };
+      comments.push(comment);
+      return comment;
     },
   },
   Post: {

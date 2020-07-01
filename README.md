@@ -10,4 +10,4 @@ Run 'npm install' in root directory
 
 use 'npm run start' to start server
 
-will be running at: http://localhost:4000/
+Open browser at: http://localhost:4000/

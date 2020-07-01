@@ -18,6 +18,12 @@ const typeDefs = gql`
     updateComment(id: ID!, data: UpdateCommentInput): Comment!
     deleteComment(id: ID!): Comment!
   }
+  type Subscription {
+    comment(postId: ID!): CommentSubscriptionPayload!
+    post: PostSubscriptionPayload!
+  }
+
+
   input CreateUserInput {
     name: String!
     email: String!
@@ -68,11 +74,26 @@ const typeDefs = gql`
     comments: [Comment!]!
   }
 
+  type PostSubscriptionPayload {
+    mutation: MutationType
+    data: Post!
+  }
+
   type Comment {
     id: ID!
     body: String!
     author: User!
     post: Post!
+  }
+  type CommentSubscriptionPayload {
+    mutation: MutationType
+    data: Comment! 
+  }
+
+  enum MutationType {
+    CREATED
+    UPDATED
+    DELETED
   }
 `;
 
